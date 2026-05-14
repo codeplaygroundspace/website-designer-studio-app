@@ -1,10 +1,9 @@
 export type StudioCategory =
-  | "Pages"
-  | "Sections"
-  | "Navigations"
-  | "Media"
-  | "Forms"
-  | "Utility";
+  | "Top of page"
+  | "Welcome / intro"
+  | "About"
+  | "Testimonials"
+  | "Footer";
 
 export type StudioAsset = {
   id: string;
@@ -15,98 +14,69 @@ export type StudioAsset = {
 };
 
 export const studioCategories: StudioCategory[] = [
-  "Pages",
-  "Sections",
-  "Navigations",
-  "Media",
-  "Forms",
-  "Utility",
+  "Top of page",
+  "Welcome / intro",
+  "About",
+  "Testimonials",
+  "Footer",
 ];
 
 export const studioAssets: StudioAsset[] = [
   {
-    id: "page-landing",
-    title: "Landing page",
-    category: "Pages",
-    image: "/studio-assets/page-landing.svg",
-    height: 900,
+    id: "section-about-01",
+    title: "About section",
+    category: "About",
+    image: "/studio-assets/sections/about/about-01.png",
+    height: 540,
   },
   {
-    id: "page-detail",
-    title: "Detail page",
-    category: "Pages",
-    image: "/studio-assets/page-detail.svg",
-    height: 900,
+    id: "section-footer-01",
+    title: "Footer section",
+    category: "Footer",
+    image: "/studio-assets/sections/footer/footer-01.png",
+    height: 540,
   },
   {
-    id: "section-hero",
-    title: "Editorial hero",
-    category: "Sections",
-    image: "/studio-assets/section-hero.svg",
-    height: 520,
+    id: "section-hero-01",
+    title: "Top of page 01",
+    category: "Top of page",
+    image: "/studio-assets/sections/hero/hero-01.png",
+    height: 540,
   },
   {
-    id: "section-gallery",
-    title: "Gallery grid",
-    category: "Sections",
-    image: "/studio-assets/section-gallery.svg",
-    height: 500,
+    id: "section-hero-02",
+    title: "Top of page 02",
+    category: "Top of page",
+    image: "/studio-assets/sections/hero/hero-02.png",
+    height: 540,
   },
   {
-    id: "nav-minimal",
-    title: "Minimal nav",
-    category: "Navigations",
-    image: "/studio-assets/nav-minimal.svg",
-    height: 120,
+    id: "section-hero-03",
+    title: "Top of page 03",
+    category: "Top of page",
+    image: "/studio-assets/sections/hero/hero-03.png",
+    height: 540,
   },
   {
-    id: "nav-split",
-    title: "Split nav",
-    category: "Navigations",
-    image: "/studio-assets/nav-split.svg",
-    height: 140,
+    id: "section-hero-04",
+    title: "Top of page 04",
+    category: "Top of page",
+    image: "/studio-assets/sections/hero/hero-04.png",
+    height: 540,
   },
   {
-    id: "media-feature",
-    title: "Feature image",
-    category: "Media",
-    image: "/studio-assets/media-feature.svg",
-    height: 460,
+    id: "section-testimonial-01",
+    title: "Testimonials section",
+    category: "Testimonials",
+    image: "/studio-assets/sections/testimonial/testimonial-01.png",
+    height: 540,
   },
   {
-    id: "media-mosaic",
-    title: "Image mosaic",
-    category: "Media",
-    image: "/studio-assets/media-mosaic.svg",
-    height: 520,
-  },
-  {
-    id: "form-inquiry",
-    title: "Inquiry form",
-    category: "Forms",
-    image: "/studio-assets/form-inquiry.svg",
-    height: 560,
-  },
-  {
-    id: "form-newsletter",
-    title: "Newsletter band",
-    category: "Forms",
-    image: "/studio-assets/form-newsletter.svg",
-    height: 300,
-  },
-  {
-    id: "utility-footer",
-    title: "Footer",
-    category: "Utility",
-    image: "/studio-assets/utility-footer.svg",
-    height: 360,
-  },
-  {
-    id: "utility-cta",
-    title: "Call to action",
-    category: "Utility",
-    image: "/studio-assets/utility-cta.svg",
-    height: 360,
+    id: "section-welcome-01",
+    title: "Welcome section",
+    category: "Welcome / intro",
+    image: "/studio-assets/sections/welcome/welcome-01.png",
+    height: 540,
   },
 ];
 

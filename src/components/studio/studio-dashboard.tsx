@@ -61,35 +61,33 @@ function createId(prefix: string) {
 }
 
 function createDefaultProject(): StudioProject {
-  const pageId = createId("page");
-
   return {
     pages: [
       {
-        id: pageId,
+        id: "page-home",
         name: "Home",
         sections: [],
       },
     ],
-    activePageId: pageId,
+    activePageId: "page-home",
   };
 }
 
-function readStoredProject(): StudioProject {
+function readStoredProject(): StudioProject | null {
   if (typeof window === "undefined") {
-    return createDefaultProject();
+    return null;
   }
 
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (!stored) {
-      return createDefaultProject();
+      return null;
     }
 
-    return sanitizeProject(JSON.parse(stored)) ?? createDefaultProject();
+    return sanitizeProject(JSON.parse(stored));
   } catch {
     window.localStorage.removeItem(STORAGE_KEY);
-    return createDefaultProject();
+    return null;
   }
 }
 
@@ -134,18 +132,36 @@ function sanitizeProject(value: unknown): StudioProject | null {
 
 export function StudioDashboard() {
   const [project, setProject] =
-    React.useState<StudioProject>(readStoredProject);
+    React.useState<StudioProject>(createDefaultProject);
   const [activeCategory, setActiveCategory] =
-    React.useState<StudioCategory>("Sections");
+    React.useState<StudioCategory>("Top of page");
   const [searchQuery, setSearchQuery] = React.useState("");
   const [exportError, setExportError] = React.useState("");
   const [isExporting, setIsExporting] = React.useState(false);
   const [deletePageId, setDeletePageId] = React.useState<string | null>(null);
   const [resetOpen, setResetOpen] = React.useState(false);
   const canvasRef = React.useRef<HTMLDivElement>(null);
+  const canSaveProjectRef = React.useRef(false);
 
   React.useEffect(() => {
     if (typeof window === "undefined") {
+      return;
+    }
+
+    const storedProject = readStoredProject();
+    const timeout = window.setTimeout(() => {
+      if (storedProject) {
+        setProject(storedProject);
+      }
+
+      canSaveProjectRef.current = true;
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !canSaveProjectRef.current) {
       return;
     }
 
