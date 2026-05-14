@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460" role="img" aria-labelledby="title">
+  <title id="title">Feature image design option</title>
+  <rect width="960" height="460" fill="#ffffff"/>
+  <rect x="52" y="52" width="856" height="356" rx="22" fill="#e2e8f0"/>
+  <path d="M92 350 L260 204 L388 310 L502 220 L722 350 Z" fill="#cbd5e1"/>
+  <circle cx="746" cy="122" r="44" fill="#f8fafc"/>
+  <rect x="82" y="82" width="180" height="16" rx="8" fill="#71717a"/>
+</svg>

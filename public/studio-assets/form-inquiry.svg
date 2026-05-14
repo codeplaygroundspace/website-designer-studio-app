@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title">
+  <title id="title">Inquiry form design option</title>
+  <rect width="960" height="560" fill="#ffffff"/>
+  <rect x="72" y="80" width="310" height="34" rx="4" fill="#18181b"/>
+  <rect x="72" y="142" width="410" height="12" rx="6" fill="#a1a1aa"/>
+  <rect x="72" y="166" width="346" height="12" rx="6" fill="#d4d4d8"/>
+  <rect x="548" y="68" width="340" height="420" rx="18" fill="#f8fafc" stroke="#e4e4e7"/>
+  <rect x="584" y="110" width="268" height="44" rx="8" fill="#ffffff" stroke="#d4d4d8"/>
+  <rect x="584" y="178" width="268" height="44" rx="8" fill="#ffffff" stroke="#d4d4d8"/>
+  <rect x="584" y="246" width="268" height="96" rx="8" fill="#ffffff" stroke="#d4d4d8"/>
+  <rect x="584" y="382" width="132" height="42" rx="21" fill="#064e3b"/>
+</svg>

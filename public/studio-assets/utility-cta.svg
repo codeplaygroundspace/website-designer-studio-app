@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Call to action design option</title>
+  <rect width="960" height="360" fill="#f8fafc"/>
+  <rect x="72" y="60" width="816" height="240" rx="24" fill="#ffffff" stroke="#e4e4e7"/>
+  <rect x="132" y="116" width="340" height="34" rx="4" fill="#18181b"/>
+  <rect x="132" y="174" width="430" height="12" rx="6" fill="#a1a1aa"/>
+  <rect x="132" y="198" width="318" height="12" rx="6" fill="#d4d4d8"/>
+  <rect x="690" y="156" width="132" height="44" rx="22" fill="#064e3b"/>
+</svg>

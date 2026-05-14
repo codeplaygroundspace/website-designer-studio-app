@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="140" viewBox="0 0 960 140" role="img" aria-labelledby="title">
+  <title id="title">Split navigation design option</title>
+  <rect width="960" height="140" fill="#f8fafc"/>
+  <rect x="40" y="36" width="880" height="68" rx="10" fill="#ffffff" stroke="#e4e4e7"/>
+  <rect x="74" y="62" width="78" height="18" rx="3" fill="#18181b"/>
+  <rect x="250" y="66" width="48" height="8" rx="4" fill="#71717a"/>
+  <rect x="318" y="66" width="58" height="8" rx="4" fill="#71717a"/>
+  <rect x="396" y="66" width="44" height="8" rx="4" fill="#71717a"/>
+  <circle cx="789" cy="70" r="14" fill="#dcfce7"/>
+  <rect x="825" y="54" width="58" height="32" rx="6" fill="#18181b"/>
+</svg>

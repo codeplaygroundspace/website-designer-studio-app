@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="900" viewBox="0 0 960 900" role="img" aria-labelledby="title">
+  <title id="title">Landing page design option</title>
+  <rect width="960" height="900" fill="#ffffff"/>
+  <rect x="48" y="36" width="864" height="74" rx="10" fill="#f8fafc" stroke="#e4e4e7"/>
+  <rect x="76" y="64" width="88" height="18" rx="3" fill="#18181b"/>
+  <rect x="582" y="68" width="46" height="8" rx="4" fill="#71717a"/>
+  <rect x="650" y="68" width="52" height="8" rx="4" fill="#71717a"/>
+  <rect x="800" y="56" width="78" height="32" rx="16" fill="#064e3b"/>
+  <rect x="72" y="188" width="360" height="40" rx="4" fill="#18181b"/>
+  <rect x="72" y="246" width="520" height="20" rx="4" fill="#18181b"/>
+  <rect x="72" y="300" width="420" height="12" rx="6" fill="#a1a1aa"/>
+  <rect x="72" y="326" width="358" height="12" rx="6" fill="#d4d4d8"/>
+  <rect x="72" y="382" width="132" height="42" rx="21" fill="#064e3b"/>
+  <rect x="612" y="178" width="260" height="270" rx="22" fill="#e4e4e7"/>
+  <rect x="72" y="560" width="246" height="180" rx="16" fill="#e4e4e7"/>
+  <rect x="356" y="520" width="246" height="220" rx="16" fill="#cbd5e1"/>
+  <rect x="640" y="560" width="246" height="180" rx="16" fill="#e4e4e7"/>
+  <rect x="72" y="812" width="816" height="1" fill="#e4e4e7"/>
+</svg>

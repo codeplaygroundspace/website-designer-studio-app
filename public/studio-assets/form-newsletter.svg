@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="title">
+  <title id="title">Newsletter band design option</title>
+  <rect width="960" height="300" fill="#064e3b"/>
+  <rect x="72" y="78" width="360" height="34" rx="4" fill="#ffffff"/>
+  <rect x="72" y="138" width="430" height="12" rx="6" fill="#d1fae5"/>
+  <rect x="72" y="164" width="318" height="12" rx="6" fill="#a7f3d0"/>
+  <rect x="556" y="110" width="256" height="52" rx="8" fill="#ffffff"/>
+  <rect x="828" y="110" width="72" height="52" rx="8" fill="#18181b"/>
+</svg>

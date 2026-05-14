@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title">
+  <title id="title">Footer design option</title>
+  <rect width="960" height="360" fill="#18181b"/>
+  <rect x="60" y="72" width="100" height="24" rx="3" fill="#ffffff"/>
+  <rect x="60" y="130" width="264" height="10" rx="5" fill="#a1a1aa"/>
+  <rect x="60" y="154" width="214" height="10" rx="5" fill="#71717a"/>
+  <rect x="500" y="78" width="92" height="10" rx="5" fill="#ffffff"/>
+  <rect x="500" y="118" width="68" height="8" rx="4" fill="#a1a1aa"/>
+  <rect x="500" y="146" width="82" height="8" rx="4" fill="#a1a1aa"/>
+  <rect x="668" y="78" width="92" height="10" rx="5" fill="#ffffff"/>
+  <rect x="668" y="118" width="78" height="8" rx="4" fill="#a1a1aa"/>
+  <rect x="668" y="146" width="64" height="8" rx="4" fill="#a1a1aa"/>
+  <rect x="60" y="278" width="840" height="1" fill="#3f3f46"/>
+</svg>

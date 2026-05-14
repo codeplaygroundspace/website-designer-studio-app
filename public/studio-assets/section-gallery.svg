@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title">
+  <title id="title">Gallery grid design option</title>
+  <rect width="960" height="500" fill="#f8fafc"/>
+  <rect x="52" y="54" width="196" height="24" rx="4" fill="#18181b"/>
+  <rect x="52" y="92" width="370" height="12" rx="6" fill="#a1a1aa"/>
+  <rect x="52" y="150" width="192" height="250" rx="14" fill="#d4d4d8"/>
+  <rect x="268" y="150" width="192" height="250" rx="14" fill="#e4e4e7"/>
+  <rect x="484" y="150" width="192" height="250" rx="14" fill="#cbd5e1"/>
+  <rect x="700" y="150" width="208" height="250" rx="14" fill="#e2e8f0"/>
+  <rect x="80" y="426" width="128" height="10" rx="5" fill="#71717a"/>
+  <rect x="296" y="426" width="128" height="10" rx="5" fill="#71717a"/>
+  <rect x="512" y="426" width="128" height="10" rx="5" fill="#71717a"/>
+  <rect x="728" y="426" width="128" height="10" rx="5" fill="#71717a"/>
+</svg>

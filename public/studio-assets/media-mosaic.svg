@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title">
+  <title id="title">Image mosaic design option</title>
+  <rect width="960" height="520" fill="#f8fafc"/>
+  <rect x="52" y="52" width="408" height="416" rx="20" fill="#cbd5e1"/>
+  <rect x="484" y="52" width="196" height="196" rx="20" fill="#e4e4e7"/>
+  <rect x="704" y="52" width="204" height="196" rx="20" fill="#d4d4d8"/>
+  <rect x="484" y="272" width="424" height="196" rx="20" fill="#e2e8f0"/>
+</svg>
