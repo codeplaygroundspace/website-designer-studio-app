@@ -65,22 +65,17 @@ function Section({
   title,
   description,
   children,
-  mobileHidden,
 }: {
   id: string;
   number: number;
   title: string;
   description: string;
   children: ReactNode;
-  mobileHidden?: boolean;
 }) {
   return (
     <section
       id={id}
-      className={cn(
-        "mb-16 scroll-mt-8 pb-16",
-        mobileHidden && "hidden lg:block",
-      )}
+      className="mb-8 scroll-mt-8 pb-8 lg:mb-16 lg:pb-16"
     >
       <header className="mb-9">
         <h2 className="mb-2.5 flex items-baseline gap-3 font-display text-[30px] font-medium leading-[1.15] tracking-[-0.015em] text-foreground">
@@ -369,20 +364,16 @@ export function TherapistFormPage() {
 
   const goToSection = (id: string) => {
     setActiveSection(id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  function makeSectionProps(id: string) {
-    return { mobileHidden: activeSection !== id };
-  }
-
+  // Scroll-spy: keeps bottom nav pill in sync on all screen sizes
   useEffect(() => {
     sections.forEach((s) => {
       sectionRefs.current[s.id] = document.getElementById(s.id);
     });
 
     const handleScroll = () => {
-      if (window.innerWidth < 1024) return;
       const midY = window.innerHeight / 2;
       let current = sections[0].id;
       for (const section of sections) {
@@ -476,7 +467,7 @@ export function TherapistFormPage() {
 
         <div className="px-6 pb-24 pt-16 sm:px-10 lg:px-16 lg:pb-14 lg:pt-14">
           <form className="max-w-[720px]">
-            <div className={cn("mb-14", activeSection !== "s1" && "hidden lg:block")}>
+            <div className="mb-14">
               <h1 className="mb-[18px] font-display text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground">
                 Let&apos;s get to <span>know you</span>
               </h1>
@@ -492,7 +483,6 @@ export function TherapistFormPage() {
               number={1}
               title="The basics"
               description="Quick facts about you."
-              {...makeSectionProps("s1")}
             >
               <Field
                 label="Your name"
@@ -586,7 +576,6 @@ export function TherapistFormPage() {
               number={2}
               title="Who you help"
               description="The hardest part of writing about yourself is being specific. We'll guide you."
-              {...makeSectionProps("s2")}
             >
               <Field
                 label="In one sentence, who do you help?"
@@ -650,7 +639,6 @@ export function TherapistFormPage() {
               number={3}
               title="How you work"
               description="Your approach, in language a client would understand"
-              {...makeSectionProps("s3")}
             >
               <Field
                 label="What therapeutic approach do you use?"
@@ -695,7 +683,6 @@ export function TherapistFormPage() {
               number={4}
               title="Your story"
               description="For your About page. This is the part that adds warmth."
-              {...makeSectionProps("s4")}
             >
               <Field
                 label="Why do you do this work?"
@@ -746,7 +733,6 @@ export function TherapistFormPage() {
               number={5}
               title="Issues you work with"
               description="Tick the ones you'd want a client to come to you for. Don't tick everything, be honest about your specialism."
-              {...makeSectionProps("s5")}
             >
               <Field label="Areas you work with">
                 <div className="mb-3.5 flex flex-wrap gap-2">
@@ -765,7 +751,7 @@ export function TherapistFormPage() {
                         )
                       }
                       className={cn(
-                        "select-none rounded-full border px-3.5 py-2 text-[13.5px] transition-colors",
+                        "select-none rounded-[10px] border px-3.5 py-2 text-[13.5px] transition-colors",
                         formValues.issuesSelected.includes(issue)
                           ? "border-primary bg-primary/10 text-foreground"
                           : "border-border bg-card text-foreground/75 hover:border-muted-foreground hover:text-foreground",
@@ -803,7 +789,6 @@ export function TherapistFormPage() {
               number={6}
               title="Practical details"
               description="Photos, logos, your web address."
-              {...makeSectionProps("s6")}
             >
               <Field
                 label="Your photo"
@@ -881,7 +866,6 @@ export function TherapistFormPage() {
               number={7}
               title="Common questions clients ask"
               description="For your FAQ page. We'll write the answers — just give us the topics you want covered. Add as many as you like."
-              {...makeSectionProps("s7")}
             >
               <FaqItem
                 number="01"
@@ -906,7 +890,6 @@ export function TherapistFormPage() {
               number={8}
               title="Tone & voice"
               description="How you'd like your site to sound. This guides how we write everything."
-              {...makeSectionProps("s8")}
             >
               <Field label="Which best describes how you'd like to come across?">
                 <div className="flex flex-col gap-2">
@@ -954,7 +937,7 @@ export function TherapistFormPage() {
               </Field>
             </Section>
 
-            <div className={cn("mt-14 rounded-2xl bg-foreground p-8 text-background", activeSection !== "s8" && "hidden lg:block")}>
+            <div className="mt-14 rounded-2xl bg-foreground p-8 text-background">
               <h3 className="mb-2 font-display text-2xl font-medium tracking-[-0.01em]">
                 Ready when you are
               </h3>
