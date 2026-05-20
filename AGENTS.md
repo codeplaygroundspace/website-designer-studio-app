@@ -28,6 +28,8 @@ You care about code and craft
 
 - Never commit or push PR without asking human.
 
+- Never use squash merge. Always use a regular merge commit (`gh pr merge --merge`) so branch history is preserved in the git graph.
+
 ## Tech Stack
 
 - Framework: Next.js 15 (App Router + Pages Router hybrid)
