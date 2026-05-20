@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, type ReactNode } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { sections, insurers, issues } from "./data/intake-form-data";
+import { sections, insurers, issues, fieldExamples } from "./data/intake-form-data";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 
 function Field({
@@ -65,17 +65,22 @@ function Section({
   title,
   description,
   children,
+  mobileHidden,
 }: {
   id: string;
   number: number;
   title: string;
   description: string;
   children: ReactNode;
+  mobileHidden?: boolean;
 }) {
   return (
     <section
       id={id}
-      className="mb-16 scroll-mt-8 border-b border-border pb-16 last:border-b-0"
+      className={cn(
+        "mb-16 scroll-mt-8 pb-16",
+        mobileHidden && "hidden lg:block",
+      )}
     >
       <header className="mb-9">
         <h2 className="mb-2.5 flex items-baseline gap-3 font-display text-[30px] font-medium leading-[1.15] tracking-[-0.015em] text-foreground">
@@ -162,16 +167,27 @@ function ToggleGroup({
   );
 }
 
-function ExamplesToggle() {
+function ExamplesToggle({ fieldKey }: { fieldKey: string }) {
+  const [open, setOpen] = useState(false);
+  const example = fieldExamples[fieldKey];
+  if (!example) return null;
   return (
-    <div className="mt-1.5 flex justify-end">
-      <button
-        type="button"
-        className="inline-flex items-center gap-1.5 text-[13px] text-primary transition-opacity hover:opacity-70"
-      >
-        <span>+</span>
-        Show me examples
-      </button>
+    <div className="mt-1.5">
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex items-center gap-1.5 text-[13px] text-primary transition-opacity hover:opacity-70"
+        >
+          <span>{open ? "−" : "+"}</span>
+          {open ? "Hide examples" : "Show me examples"}
+        </button>
+      </div>
+      {open && (
+        <div className="mt-2 rounded-[10px] border border-border bg-card p-4 text-[13.5px] leading-relaxed text-foreground/75">
+          {example}
+        </div>
+      )}
     </div>
   );
 }
@@ -351,12 +367,22 @@ export function TherapistFormPage() {
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
+  const goToSection = (id: string) => {
+    setActiveSection(id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  function makeSectionProps(id: string) {
+    return { mobileHidden: activeSection !== id };
+  }
+
   useEffect(() => {
     sections.forEach((s) => {
       sectionRefs.current[s.id] = document.getElementById(s.id);
     });
 
     const handleScroll = () => {
+      if (window.innerWidth < 1024) return;
       const midY = window.innerHeight / 2;
       let current = sections[0].id;
       for (const section of sections) {
@@ -374,14 +400,22 @@ export function TherapistFormPage() {
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <div className="mx-auto grid min-h-dvh max-w-[1400px] grid-cols-1 lg:grid-cols-[300px_1fr]">
-        <aside className="flex border-b border-border bg-background px-6 py-6 lg:sticky lg:top-0 lg:h-dvh lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r lg:px-7 lg:pb-6 lg:pt-9">
-          <div className="w-full">
-            <div className="mb-8 flex items-center gap-2.5 font-display text-lg font-medium tracking-[-0.01em]">
-              <span className="size-2.5 rounded-full bg-primary" />
-              <span>Your site</span>
-            </div>
+      <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur-sm lg:sticky lg:bg-background lg:px-7 lg:py-3.5 lg:backdrop-blur-none">
+        <div className="flex items-center gap-2 font-display text-sm font-medium tracking-[-0.01em] lg:gap-2.5 lg:text-[15px]">
+          <span className="size-2 rounded-full bg-primary lg:size-2.5" />
+          <span>Your site</span>
+        </div>
+        <button
+          type="button"
+          className="rounded-lg border border-border px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:bg-muted lg:px-4"
+        >
+          Preview
+        </button>
+      </header>
 
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 lg:grid-cols-[300px_1fr]">
+        <aside className="hidden lg:flex lg:sticky lg:top-[53px] lg:h-[calc(100dvh-53px)] lg:flex-col lg:overflow-y-auto lg:border-r lg:border-border lg:px-7 lg:pb-6 lg:pt-9">
+          <div className="w-full">
             <div className="mb-6 rounded-[10px] border border-border bg-card px-4 py-3.5">
               <div className="mb-2 text-xs uppercase tracking-[0.04em] text-muted-foreground">
                 Progress
@@ -396,7 +430,7 @@ export function TherapistFormPage() {
               </div>
             </div>
 
-            <nav aria-label="Form sections" className="hidden lg:block">
+            <nav aria-label="Form sections">
               <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
                 {sections.map((section) => {
                   const isActive = activeSection === section.id;
@@ -440,9 +474,9 @@ export function TherapistFormPage() {
           </div>
         </aside>
 
-        <div className="px-6 pb-24 pt-8 sm:px-10 lg:px-16 lg:pb-14 lg:pt-14">
+        <div className="px-6 pb-24 pt-16 sm:px-10 lg:px-16 lg:pb-14 lg:pt-14">
           <form className="max-w-[720px]">
-            <div className="mb-14">
+            <div className={cn("mb-14", activeSection !== "s1" && "hidden lg:block")}>
               <h1 className="mb-[18px] font-display text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground">
                 Let&apos;s get to <span>know you</span>
               </h1>
@@ -458,6 +492,7 @@ export function TherapistFormPage() {
               number={1}
               title="The basics"
               description="Quick facts about you."
+              {...makeSectionProps("s1")}
             >
               <Field
                 label="Your name"
@@ -551,6 +586,7 @@ export function TherapistFormPage() {
               number={2}
               title="Who you help"
               description="The hardest part of writing about yourself is being specific. We'll guide you."
+              {...makeSectionProps("s2")}
             >
               <Field
                 label="In one sentence, who do you help?"
@@ -561,7 +597,7 @@ export function TherapistFormPage() {
                   value={formValues.whoYouHelp}
                   onChange={(e) => setField("whoYouHelp", e.target.value)}
                 />
-                <ExamplesToggle />
+                <ExamplesToggle fieldKey="whoYouHelp" />
               </Field>
               <Field
                 label="What are three things your clients are most often struggling with when they first contact you?"
@@ -584,7 +620,7 @@ export function TherapistFormPage() {
                     onChange={(e) => setField("struggle3", e.target.value)}
                   />
                 </div>
-                <ExamplesToggle />
+                <ExamplesToggle fieldKey="struggles" />
               </Field>
               <Field
                 label="What's the moment in life that often brings someone to you?"
@@ -598,7 +634,7 @@ export function TherapistFormPage() {
                   value={formValues.triggerMoment}
                   onChange={(e) => setField("triggerMoment", e.target.value)}
                 />
-                <ExamplesToggle />
+                <ExamplesToggle fieldKey="triggerMoment" />
               </Field>
               <Field
                 label="Anyone you don't work with?"
@@ -614,6 +650,7 @@ export function TherapistFormPage() {
               number={3}
               title="How you work"
               description="Your approach, in language a client would understand"
+              {...makeSectionProps("s3")}
             >
               <Field
                 label="What therapeutic approach do you use?"
@@ -635,7 +672,7 @@ export function TherapistFormPage() {
                   value={formValues.workingStyle}
                   onChange={(e) => setField("workingStyle", e.target.value)}
                 />
-                <ExamplesToggle />
+                <ExamplesToggle fieldKey="workingStyle" />
               </Field>
               <Field
                 label="What's a first session like?"
@@ -658,6 +695,7 @@ export function TherapistFormPage() {
               number={4}
               title="Your story"
               description="For your About page. This is the part that adds warmth."
+              {...makeSectionProps("s4")}
             >
               <Field
                 label="Why do you do this work?"
@@ -669,7 +707,7 @@ export function TherapistFormPage() {
                   value={formValues.whyYouDoThis}
                   onChange={(e) => setField("whyYouDoThis", e.target.value)}
                 />
-                <ExamplesToggle />
+                <ExamplesToggle fieldKey="whyYouDoThis" />
               </Field>
               <Field
                 label="What do clients tell you they appreciated about working with you?"
@@ -708,6 +746,7 @@ export function TherapistFormPage() {
               number={5}
               title="Issues you work with"
               description="Tick the ones you'd want a client to come to you for. Don't tick everything, be honest about your specialism."
+              {...makeSectionProps("s5")}
             >
               <Field label="Areas you work with">
                 <div className="mb-3.5 flex flex-wrap gap-2">
@@ -764,6 +803,7 @@ export function TherapistFormPage() {
               number={6}
               title="Practical details"
               description="Photos, logos, your web address."
+              {...makeSectionProps("s6")}
             >
               <Field
                 label="Your photo"
@@ -841,6 +881,7 @@ export function TherapistFormPage() {
               number={7}
               title="Common questions clients ask"
               description="For your FAQ page. We'll write the answers — just give us the topics you want covered. Add as many as you like."
+              {...makeSectionProps("s7")}
             >
               <FaqItem
                 number="01"
@@ -865,6 +906,7 @@ export function TherapistFormPage() {
               number={8}
               title="Tone & voice"
               description="How you'd like your site to sound. This guides how we write everything."
+              {...makeSectionProps("s8")}
             >
               <Field label="Which best describes how you'd like to come across?">
                 <div className="flex flex-col gap-2">
@@ -912,7 +954,7 @@ export function TherapistFormPage() {
               </Field>
             </Section>
 
-            <div className="mt-14 rounded-2xl bg-foreground p-8 text-background">
+            <div className={cn("mt-14 rounded-2xl bg-foreground p-8 text-background", activeSection !== "s8" && "hidden lg:block")}>
               <h3 className="mb-2 font-display text-2xl font-medium tracking-[-0.01em]">
                 Ready when you are
               </h3>
@@ -932,7 +974,7 @@ export function TherapistFormPage() {
           </form>
         </div>
       </div>
-      <MobileBottomNav activeSection={activeSection} />
+      <MobileBottomNav activeSection={activeSection} onSectionChange={goToSection} />
     </main>
   );
 }

@@ -55,6 +55,19 @@ export const sections = [
   },
 ];
 
+export const fieldExamples: Record<string, string> = {
+  whoYouHelp:
+    "\"I work with high-achieving professionals in their 30s and 40s who are outwardly successful but privately exhausted — people who can hold it together at work but feel like they're quietly unravelling at home.\"",
+  struggles:
+    "\"I can't switch off after work\" · \"I've been signed off sick but feel guilty about it\" · \"My relationship is suffering because I bring all my stress home\"",
+  triggerMoment:
+    "\"Often it's a moment of realising the coping strategies that used to work just aren't cutting it anymore — a health scare, a relationship breaking point, or simply waking up one morning and thinking: I can't keep doing this.\"",
+  workingStyle:
+    "\"People often tell me sessions feel like a conversation rather than an interrogation. I'll gently challenge you when it's useful, but I'll never push you somewhere you're not ready to go. There's humour in the room too — therapy doesn't have to feel heavy all the time.\"",
+  whyYouDoThis:
+    "\"I came to this work after my own experience of burnout in my late twenties. I know what it's like to look completely fine from the outside while quietly falling apart — and I know how much difference the right support can make.\"",
+};
+
 export const insurers = [
   "Bupa",
   "AXA Health",
