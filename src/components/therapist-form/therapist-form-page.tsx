@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -259,7 +259,83 @@ function FaqItem({
   );
 }
 
+interface FormValues {
+  name: string;
+  title: string;
+  accreditation: string;
+  fees: string;
+  workMode: string[];
+  whoYouHelp: string;
+  struggle1: string;
+  struggle2: string;
+  struggle3: string;
+  triggerMoment: string;
+  approach: string;
+  workingStyle: string;
+  firstSession: string;
+  whyYouDoThis: string;
+  trainingBackground: string;
+  yearsPractising: string;
+  issuesSelected: string[];
+  topSpecialisms: string;
+  hasHeadshot: boolean;
+  domain: string;
+  primaryCta: string;
+  faqItems: number;
+  toneSelection: string;
+}
+
+const initialFormValues: FormValues = {
+  name: "",
+  title: "",
+  accreditation: "",
+  fees: "",
+  workMode: [],
+  whoYouHelp: "",
+  struggle1: "",
+  struggle2: "",
+  struggle3: "",
+  triggerMoment: "",
+  approach: "",
+  workingStyle: "",
+  firstSession: "",
+  whyYouDoThis: "",
+  trainingBackground: "",
+  yearsPractising: "",
+  issuesSelected: [],
+  topSpecialisms: "",
+  hasHeadshot: false,
+  domain: "",
+  primaryCta: "",
+  faqItems: 2,
+  toneSelection: "",
+};
+
+function isSectionComplete(
+  sectionId: string,
+  values: FormValues,
+): boolean {
+  const section = sections.find((s) => s.id === sectionId);
+  if (!section) return false;
+  return section.requiredFields.every((field) => {
+    const v = values[field as keyof FormValues];
+    if (typeof v === "boolean") return v;
+    if (Array.isArray(v)) return v.length > 0;
+    if (typeof v === "number") return v > 0;
+    return typeof v === "string" && v.trim().length > 0;
+  });
+}
+
 export function TherapistFormPage() {
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+
+  function setField<K extends keyof FormValues>(key: K, value: FormValues[K]) {
+    setFormValues((prev) => ({ ...prev, [key]: value }));
+  }
+
+  const [activeSection, setActiveSection] = useState<string>(sections[0].id);
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <div className="mx-auto grid min-h-dvh max-w-[1400px] grid-cols-1 lg:grid-cols-[300px_1fr]">
