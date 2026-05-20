@@ -12,8 +12,8 @@
 
 ## File Map
 
-| File | What changes |
-|---|---|
+| File                                                    | What changes                                                 |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
 | `src/components/therapist-form/therapist-form-page.tsx` | All changes — state, hooks, controlled fields, sidebar logic |
 
 No new files needed. All components are local to this file.
@@ -23,6 +23,7 @@ No new files needed. All components are local to this file.
 ### Task 1: Extend sections metadata with required field keys
 
 **Files:**
+
 - Modify: `src/components/therapist-form/therapist-form-page.tsx` (the `sections` array at the top)
 
 Remove the static `state` property from the `sections` array and add a `requiredFields` string array to each entry. These keys will be used to look up values in `FormValues` to determine completion.
@@ -43,7 +44,13 @@ const sections = [
     id: "s2",
     number: 2,
     label: "Who you help",
-    requiredFields: ["whoYouHelp", "struggle1", "struggle2", "struggle3", "triggerMoment"],
+    requiredFields: [
+      "whoYouHelp",
+      "struggle1",
+      "struggle2",
+      "struggle3",
+      "triggerMoment",
+    ],
   },
   {
     id: "s3",
@@ -104,6 +111,7 @@ git commit -m "refactor: replace static section state with requiredFields metada
 ### Task 2: Add FormValues type and completion logic to TherapistFormPage
 
 **Files:**
+
 - Modify: `src/components/therapist-form/therapist-form-page.tsx`
 
 Add the `FormValues` interface, an initial state object, `useState`, and the `isSectionComplete` helper just above the `TherapistFormPage` function. No JSX changes yet.
@@ -165,10 +173,7 @@ const initialFormValues: FormValues = {
   toneSelection: "",
 };
 
-function isSectionComplete(
-  sectionId: string,
-  values: FormValues,
-): boolean {
+function isSectionComplete(sectionId: string, values: FormValues): boolean {
   const section = sections.find((s) => s.id === sectionId);
   if (!section) return false;
   return section.requiredFields.every((field) => {
@@ -219,6 +224,7 @@ git commit -m "feat: add FormValues state and isSectionComplete logic"
 ### Task 3: Make required fields controlled
 
 **Files:**
+
 - Modify: `src/components/therapist-form/therapist-form-page.tsx`
 
 Wire `formValues` and `setField` into the required fields throughout the form JSX. Also update the `CheckItem`, `ToggleGroup`, and `RadioCard` sub-components to support controlled mode.
@@ -252,7 +258,10 @@ function CheckItem({
         )}
       >
         {checked && (
-          <svg viewBox="0 0 10 8" className="size-2.5 fill-none stroke-white stroke-2">
+          <svg
+            viewBox="0 0 10 8"
+            className="size-2.5 fill-none stroke-white stroke-2"
+          >
             <polyline points="1,4 4,7 9,1" />
           </svg>
         )}
@@ -289,7 +298,8 @@ function ToggleGroup({
           onClick={() => onChange?.(option)}
           className={cn(
             "rounded-md px-[18px] py-[7px] text-sm text-foreground/75 transition-colors",
-            option === activeValue && "bg-card font-medium text-foreground shadow-sm",
+            option === activeValue &&
+              "bg-card font-medium text-foreground shadow-sm",
           )}
         >
           {option}
@@ -324,7 +334,12 @@ function RadioCard({
         selected ? "border-primary" : "border-border",
       )}
     >
-      <input type="radio" className="sr-only" readOnly checked={selected ?? false} />
+      <input
+        type="radio"
+        className="sr-only"
+        readOnly
+        checked={selected ?? false}
+      />
       <span
         className={cn(
           "mt-[3px] size-4 shrink-0 rounded-full border-[1.5px] transition-colors",
@@ -606,9 +621,13 @@ function FileDrop({
       <input
         type="file"
         className="sr-only"
-        onChange={(e) => onChange?.(e.target.files != null && e.target.files.length > 0)}
+        onChange={(e) =>
+          onChange?.(e.target.files != null && e.target.files.length > 0)
+        }
       />
-      <div className="mb-1 text-[14.5px] font-medium text-foreground">{title}</div>
+      <div className="mb-1 text-[14.5px] font-medium text-foreground">
+        {title}
+      </div>
       <div className="text-[13px] text-muted-foreground">{help}</div>
     </label>
   );
@@ -659,20 +678,38 @@ Then in Section 6, wire the headshot FileDrop, domain Input, and the CTA RadioCa
 - [ ] **Step 10: Update Section 8 (Tone & voice)**
 
 ```tsx
-{[
-  { title: "Warm and reassuring", description: "Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety." },
-  { title: "Grounded and practical", description: "Clear, professional, calm. Good for clients who want results without fuss." },
-  { title: "Direct and confident", description: "Warm but no-nonsense. Good for clients who want clarity, not hand-holding." },
-  { title: "Thoughtful and reflective", description: "Literary, considered. Good for clients drawn to depth and meaning." },
-].map((opt) => (
-  <RadioCard
-    key={opt.title}
-    title={opt.title}
-    description={opt.description}
-    selected={formValues.toneSelection === opt.title}
-    onSelect={() => setField("toneSelection", opt.title)}
-  />
-))}
+{
+  [
+    {
+      title: "Warm and reassuring",
+      description:
+        "Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety.",
+    },
+    {
+      title: "Grounded and practical",
+      description:
+        "Clear, professional, calm. Good for clients who want results without fuss.",
+    },
+    {
+      title: "Direct and confident",
+      description:
+        "Warm but no-nonsense. Good for clients who want clarity, not hand-holding.",
+    },
+    {
+      title: "Thoughtful and reflective",
+      description:
+        "Literary, considered. Good for clients drawn to depth and meaning.",
+    },
+  ].map((opt) => (
+    <RadioCard
+      key={opt.title}
+      title={opt.title}
+      description={opt.description}
+      selected={formValues.toneSelection === opt.title}
+      onSelect={() => setField("toneSelection", opt.title)}
+    />
+  ));
+}
 ```
 
 - [ ] **Step 11: Compile check**
@@ -695,6 +732,7 @@ git commit -m "feat: make required fields controlled for completion tracking"
 ### Task 4: Scroll-spy for active section
 
 **Files:**
+
 - Modify: `src/components/therapist-form/therapist-form-page.tsx`
 
 Add a `useEffect` with a scroll listener. Populate `sectionRefs` after mount by finding each section element by its ID. On every scroll, find the last section whose top edge is at or above the viewport midpoint — that becomes the active section.
@@ -755,6 +793,7 @@ git commit -m "feat: add scroll-spy to track active section"
 ### Task 5: Dynamic sidebar — active state, completion state, progress bar
 
 **Files:**
+
 - Modify: `src/components/therapist-form/therapist-form-page.tsx` (sidebar JSX in the `aside`)
 
 Replace static `section.state` references with dynamic computed values from `activeSection` and `isSectionComplete`.
@@ -775,7 +814,9 @@ Find the `<nav aria-label="Form sections">` block and replace it entirely with:
             href={`#${section.id}`}
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth" });
+              document
+                .getElementById(section.id)
+                ?.scrollIntoView({ behavior: "smooth" });
             }}
             className={cn(
               "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[14.5px] text-foreground/75 transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600",
@@ -839,6 +880,7 @@ npm run dev
 ```
 
 Open `http://localhost:3000` (or wherever the intake form is routed). Verify:
+
 - Sidebar item highlights as you scroll through sections
 - Clicking a sidebar item smooth-scrolls to that section
 - Filling in all required fields in section 1 causes the section indicator to show ✓
