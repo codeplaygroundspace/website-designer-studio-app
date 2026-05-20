@@ -5,13 +5,13 @@ import { sections } from "./data/intake-form-data";
 
 interface MobileBottomNavProps {
   activeSection: string;
+  onSectionChange: (id: string) => void;
 }
 
-export function MobileBottomNav({ activeSection }: MobileBottomNavProps) {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
+export function MobileBottomNav({
+  activeSection,
+  onSectionChange,
+}: MobileBottomNavProps) {
   return (
     <nav
       aria-label="Form sections"
@@ -24,7 +24,7 @@ export function MobileBottomNav({ activeSection }: MobileBottomNavProps) {
             <button
               key={section.id}
               type="button"
-              onClick={() => scrollTo(section.id)}
+              onClick={() => onSectionChange(section.id)}
               className={cn(
                 "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] transition-colors",
                 isActive
