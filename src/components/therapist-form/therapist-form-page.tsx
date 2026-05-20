@@ -428,39 +428,51 @@ export function TherapistFormPage() {
                 Progress
               </div>
               <div className="h-1 overflow-hidden rounded-full bg-muted">
-                <div className="h-full w-[12.5%] bg-primary" />
+                <div
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{
+                    width: `${(sections.filter((s) => isSectionComplete(s.id, formValues)).length / sections.length) * 100}%`,
+                  }}
+                />
               </div>
               <div className="mt-2 text-[13px] text-foreground/75">
-                1 of 8 sections
+                {sections.filter((s) => isSectionComplete(s.id, formValues)).length} of{" "}
+                {sections.length} sections
               </div>
             </div>
 
             <nav aria-label="Form sections" className="hidden lg:block">
               <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
-                {sections.map((section) => (
-                  <li key={section.id}>
-                    <a
-                      href={`#${section.id}`}
-                      className={cn(
-                        "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[14.5px] text-foreground/75 transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600",
-                        section.state === "active" &&
-                          "bg-accent font-medium text-foreground",
-                      )}
-                    >
-                      <span
+                {sections.map((section) => {
+                  const isActive = activeSection === section.id;
+                  const isComplete = isSectionComplete(section.id, formValues);
+                  return (
+                    <li key={section.id}>
+                      <a
+                        href={`#${section.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth" });
+                        }}
                         className={cn(
-                          "flex size-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-border text-[11px] font-medium text-muted-foreground transition-colors",
-                          (section.state === "active" ||
-                            section.state === "complete") &&
-                            "border-primary bg-primary text-primary-foreground",
+                          "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[14.5px] text-foreground/75 transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600",
+                          isActive && "bg-accent font-medium text-foreground",
                         )}
                       >
-                        {section.state === "complete" ? "✓" : section.number}
-                      </span>
-                      <span>{section.label}</span>
-                    </a>
-                  </li>
-                ))}
+                        <span
+                          className={cn(
+                            "flex size-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-border text-[11px] font-medium text-muted-foreground transition-colors",
+                            (isActive || isComplete) &&
+                              "border-primary bg-primary text-primary-foreground",
+                          )}
+                        >
+                          {isComplete ? "✓" : section.number}
+                        </span>
+                        <span>{section.label}</span>
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>
