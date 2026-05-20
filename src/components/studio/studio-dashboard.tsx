@@ -105,9 +105,9 @@ function sanitizeProject(value: unknown): StudioProject | null {
     .filter((page): page is StudioPage => {
       return Boolean(
         page &&
-          typeof page.id === "string" &&
-          typeof page.name === "string" &&
-          Array.isArray(page.sections),
+        typeof page.id === "string" &&
+        typeof page.name === "string" &&
+        Array.isArray(page.sections),
       );
     })
     .map((page) => ({
@@ -242,7 +242,7 @@ export function StudioDashboard() {
       const pages = current.pages.filter((page) => page.id !== pageId);
       const nextActivePageId =
         current.activePageId === pageId
-          ? pages[Math.max(0, pageIndex - 1)]?.id ?? pages[0].id
+          ? (pages[Math.max(0, pageIndex - 1)]?.id ?? pages[0].id)
           : current.activePageId;
 
       return { pages, activePageId: nextActivePageId };
@@ -299,7 +299,9 @@ export function StudioDashboard() {
   function removeSection(index: number) {
     updateActivePage((page) => ({
       ...page,
-      sections: page.sections.filter((_, sectionIndex) => sectionIndex !== index),
+      sections: page.sections.filter(
+        (_, sectionIndex) => sectionIndex !== index,
+      ),
     }));
   }
 
@@ -335,7 +337,9 @@ export function StudioDashboard() {
       link.href = dataUrl;
       link.click();
     } catch {
-      setExportError("Export failed. Try again after the images finish loading.");
+      setExportError(
+        "Export failed. Try again after the images finish loading.",
+      );
     } finally {
       setIsExporting(false);
     }

@@ -17,7 +17,13 @@ const sections = [
     id: "s2",
     number: 2,
     label: "Who you help",
-    requiredFields: ["whoYouHelp", "struggle1", "struggle2", "struggle3", "triggerMoment"],
+    requiredFields: [
+      "whoYouHelp",
+      "struggle1",
+      "struggle2",
+      "struggle3",
+      "triggerMoment",
+    ],
   },
   {
     id: "s3",
@@ -128,7 +134,7 @@ function Section({
     >
       <header className="mb-9">
         <div className="mb-2 font-display text-[13px] tracking-[0.04em] text-muted-foreground">
-          Section {number}
+          {number}
         </div>
         <h2 className="mb-2.5 font-display text-[30px] font-medium leading-[1.15] tracking-[-0.015em] text-foreground">
           {title}
@@ -166,7 +172,10 @@ function CheckItem({
         )}
       >
         {checked && (
-          <svg viewBox="0 0 10 8" className="size-2.5 fill-none stroke-white stroke-2">
+          <svg
+            viewBox="0 0 10 8"
+            className="size-2.5 fill-none stroke-white stroke-2"
+          >
             <polyline points="1,4 4,7 9,1" />
           </svg>
         )}
@@ -197,7 +206,8 @@ function ToggleGroup({
           onClick={() => onChange?.(option)}
           className={cn(
             "rounded-md px-[18px] py-[7px] text-sm text-foreground/75 transition-colors",
-            option === activeValue && "bg-card font-medium text-foreground shadow-sm",
+            option === activeValue &&
+              "bg-card font-medium text-foreground shadow-sm",
           )}
         >
           {option}
@@ -237,7 +247,9 @@ function FileDrop({
           onChange?.(e.target.files != null && e.target.files.length > 0)
         }
       />
-      <div className="mb-1 text-[14.5px] font-medium text-foreground">{title}</div>
+      <div className="mb-1 text-[14.5px] font-medium text-foreground">
+        {title}
+      </div>
       <div className="text-[13px] text-muted-foreground">{help}</div>
     </label>
   );
@@ -262,7 +274,12 @@ function RadioCard({
         selected ? "border-primary" : "border-border",
       )}
     >
-      <input type="radio" className="sr-only" readOnly checked={selected ?? false} />
+      <input
+        type="radio"
+        className="sr-only"
+        readOnly
+        checked={selected ?? false}
+      />
       <span
         className={cn(
           "mt-[3px] size-4 shrink-0 rounded-full border-[1.5px] transition-colors",
@@ -365,10 +382,7 @@ const initialFormValues: FormValues = {
   toneSelection: "",
 };
 
-function isSectionComplete(
-  sectionId: string,
-  values: FormValues,
-): boolean {
+function isSectionComplete(sectionId: string, values: FormValues): boolean {
   const section = sections.find((s) => s.id === sectionId);
   if (!section) return false;
   return section.requiredFields.every((field) => {
@@ -434,8 +448,11 @@ export function TherapistFormPage() {
                 />
               </div>
               <div className="mt-2 text-[13px] text-foreground/75">
-                {sections.filter((s) => isSectionComplete(s.id, formValues)).length} of{" "}
-                {sections.length} sections
+                {
+                  sections.filter((s) => isSectionComplete(s.id, formValues))
+                    .length
+                }{" "}
+                of {sections.length} sections
               </div>
             </div>
 
@@ -450,7 +467,9 @@ export function TherapistFormPage() {
                         href={`#${section.id}`}
                         onClick={(e) => {
                           e.preventDefault();
-                          document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth" });
+                          document
+                            .getElementById(section.id)
+                            ?.scrollIntoView({ behavior: "smooth" });
                         }}
                         className={cn(
                           "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[14.5px] text-foreground/75 transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600",
@@ -484,17 +503,13 @@ export function TherapistFormPage() {
         <div className="px-6 py-8 sm:px-10 lg:px-16 lg:py-14">
           <form className="max-w-[720px]">
             <div className="mb-14">
-              <div className="mb-3.5 text-xs font-medium uppercase tracking-[0.12em] text-primary">
-                Step one of three
-              </div>
               <h1 className="mb-[18px] font-display text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground">
-                Let&apos;s get to know you.
+                Let&apos;s get to <span>know you</span>
               </h1>
               <p className="max-w-[580px] text-[17px] leading-[1.55] text-foreground/75">
                 We&apos;ll use what you share here to write the first draft of
-                your website. Most therapists take about 30 minutes. Your
-                answers save as you go — close the tab whenever, come back when
-                you&apos;re ready.
+                your website content. Most therapists take about 30 minutes.
+                Your answers save as you go.
               </p>
             </div>
 
@@ -502,25 +517,37 @@ export function TherapistFormPage() {
               id="s1"
               number={1}
               title="The basics"
-              description="Quick facts about you. Nothing to overthink."
+              description="Quick facts about you."
             >
               <Field
                 label="Your name"
                 help="How you'd like it to appear on the site."
               >
-                <Input placeholder="e.g. Sarah Williams or Dr Sarah Williams" value={formValues.name} onChange={(e) => setField("name", e.target.value)} />
+                <Input
+                  placeholder="Dr. Sarah Mitchell"
+                  value={formValues.name}
+                  onChange={(e) => setField("name", e.target.value)}
+                />
               </Field>
               <Field
                 label="Your professional title"
                 help="What you'd put on a business card."
               >
-                <Input placeholder="e.g. CBT Therapist, Psychotherapist, Clinical Psychologist" value={formValues.title} onChange={(e) => setField("title", e.target.value)} />
+                <Input
+                  placeholder="Clinical Psychologist"
+                  value={formValues.title}
+                  onChange={(e) => setField("title", e.target.value)}
+                />
               </Field>
               <Field
                 label="Your accreditation or registration"
                 help="List any professional bodies you're registered with."
               >
-                <Input placeholder="e.g. BACP Accredited, BPS Registered, UKCP" value={formValues.accreditation} onChange={(e) => setField("accreditation", e.target.value)} />
+                <Input
+                  placeholder="e.g. BACP Accredited, BPS Registered, UKCP"
+                  value={formValues.accreditation}
+                  onChange={(e) => setField("accreditation", e.target.value)}
+                />
               </Field>
               <Field label="Where do you work?">
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -542,22 +569,26 @@ export function TherapistFormPage() {
                   ))}
                 </div>
               </Field>
-              <Field
-                label="Your fees"
-                help="Plain language is fine — you don't need to be clever about this."
-              >
-                <Input placeholder="e.g. £90 per 50-minute session, sliding scale available" value={formValues.fees} onChange={(e) => setField("fees", e.target.value)} />
+              <Field label="Your fees" help="Plain language is fine.">
+                <Input
+                  placeholder="e.g. £90 per 50-minute session"
+                  value={formValues.fees}
+                  onChange={(e) => setField("fees", e.target.value)}
+                />
               </Field>
               <Field
                 label="Show your email on the site?"
-                help="We always need this to contact you — the toggle only controls whether visitors see it."
+                help="Visitors can see your emails."
               >
-                <ToggleGroup options={["Yes", "Just for us"]} />
+                <ToggleGroup options={["Yes", "No"]} />
               </Field>
               <Field label="Show a phone number on the site?">
                 <ToggleGroup options={["Yes", "No"]} />
               </Field>
-              <Field label="Show an address on the site?">
+              <Field
+                label="Show an address on the site?"
+                help="Useful if you have a consulting room."
+              >
                 <ToggleGroup options={["Yes", "No"]} />
               </Field>
               <Field
@@ -581,20 +612,36 @@ export function TherapistFormPage() {
             >
               <Field
                 label="In one sentence, who do you help?"
-                help="Think of one ideal client. Not everyone — the person you're best placed to support."
+                help="Think of one ideal client. Not everyone but the person you're best placed to support."
               >
                 <ExamplesToggle />
-                <Input placeholder="In about 10–20 words" value={formValues.whoYouHelp} onChange={(e) => setField("whoYouHelp", e.target.value)} />
+                <Input
+                  placeholder="In about 10–20 words"
+                  value={formValues.whoYouHelp}
+                  onChange={(e) => setField("whoYouHelp", e.target.value)}
+                />
               </Field>
               <Field
                 label="What are three things your clients are most often struggling with when they first contact you?"
-                help="In their words — what they'd type into Google — not clinical terms."
+                help=" Try not to use clinical terms, instead think what they'd type into Google in their own words when looking for help."
               >
                 <ExamplesToggle />
                 <div className="grid gap-2">
-                  <Input placeholder="First struggle" value={formValues.struggle1} onChange={(e) => setField("struggle1", e.target.value)} />
-                  <Input placeholder="Second struggle" value={formValues.struggle2} onChange={(e) => setField("struggle2", e.target.value)} />
-                  <Input placeholder="Third struggle" value={formValues.struggle3} onChange={(e) => setField("struggle3", e.target.value)} />
+                  <Input
+                    placeholder="First struggle"
+                    value={formValues.struggle1}
+                    onChange={(e) => setField("struggle1", e.target.value)}
+                  />
+                  <Input
+                    placeholder="Second struggle"
+                    value={formValues.struggle2}
+                    onChange={(e) => setField("struggle2", e.target.value)}
+                  />
+                  <Input
+                    placeholder="Third struggle"
+                    value={formValues.struggle3}
+                    onChange={(e) => setField("struggle3", e.target.value)}
+                  />
                 </div>
               </Field>
               <Field
@@ -604,11 +651,16 @@ export function TherapistFormPage() {
                 }
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Two or three sentences" rows={4} value={formValues.triggerMoment} onChange={(e) => setField("triggerMoment", e.target.value)} />
+                <Textarea
+                  placeholder="Two or three sentences"
+                  rows={4}
+                  value={formValues.triggerMoment}
+                  onChange={(e) => setField("triggerMoment", e.target.value)}
+                />
               </Field>
               <Field
                 label="Anyone you don't work with?"
-                help="It's okay — and helpful — to be clear. It helps the wrong clients self-select out."
+                help="It's okay and helpful to be clear. It helps the wrong clients self-select out."
                 optional
               >
                 <Input placeholder="e.g. I don't currently work with addictions or eating disorders" />
@@ -619,20 +671,29 @@ export function TherapistFormPage() {
               id="s3"
               number={3}
               title="How you work"
-              description="Your approach, in language a client would understand."
+              description="Your approach, in language a client would understand"
             >
               <Field
                 label="What therapeutic approach do you use?"
                 help="If you use more than one, name your main one first."
               >
-                <Input placeholder="e.g. CBT, Integrative, Psychodynamic with trauma-focused training" value={formValues.approach} onChange={(e) => setField("approach", e.target.value)} />
+                <Input
+                  placeholder="e.g. CBT, Integrative, Psychodynamic with trauma-focused training"
+                  value={formValues.approach}
+                  onChange={(e) => setField("approach", e.target.value)}
+                />
               </Field>
               <Field
                 label="What's it actually like to work with you?"
                 help="Try to avoid technical terms. Think about how a friend would describe your style."
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Two or three sentences" rows={4} value={formValues.workingStyle} onChange={(e) => setField("workingStyle", e.target.value)} />
+                <Textarea
+                  placeholder="Two or three sentences"
+                  rows={4}
+                  value={formValues.workingStyle}
+                  onChange={(e) => setField("workingStyle", e.target.value)}
+                />
               </Field>
               <Field
                 label="What's a first session like?"
@@ -658,10 +719,15 @@ export function TherapistFormPage() {
             >
               <Field
                 label="Why do you do this work?"
-                help="Two ways to answer: a personal spark, or a client experience that confirmed this was the right work for you. You don't need to share trauma — just what makes this work meaningful to you."
+                help="Two ways to answer: a personal spark, or a client experience that confirmed this was the right work for you. You don't need to share trauma, just what makes this work meaningful to you."
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Three to five sentences" rows={5} value={formValues.whyYouDoThis} onChange={(e) => setField("whyYouDoThis", e.target.value)} />
+                <Textarea
+                  placeholder="Three to five sentences"
+                  rows={5}
+                  value={formValues.whyYouDoThis}
+                  onChange={(e) => setField("whyYouDoThis", e.target.value)}
+                />
               </Field>
               <Field
                 label="What do clients tell you they appreciated about working with you?"
@@ -675,17 +741,23 @@ export function TherapistFormPage() {
               </Field>
               <Field
                 label="Your training background"
-                help="Where you trained, qualifications you hold, key additional training. Don't list everything — pick what a client would care about."
+                help="Where you trained, qualifications you hold, key additional training. Don't list everything, pick what a client would care about."
               >
                 <Textarea
                   placeholder="e.g. MSc in Counselling Psychology from University of East London (2014). Additional training in trauma-focused CBT and EMDR. Ongoing CPD in perinatal mental health."
                   rows={4}
                   value={formValues.trainingBackground}
-                  onChange={(e) => setField("trainingBackground", e.target.value)}
+                  onChange={(e) =>
+                    setField("trainingBackground", e.target.value)
+                  }
                 />
               </Field>
               <Field label="How long have you been practising?">
-                <Input placeholder="e.g. Over 10 years, or Since 2015" value={formValues.yearsPractising} onChange={(e) => setField("yearsPractising", e.target.value)} />
+                <Input
+                  placeholder="e.g. Over 10 years, or Since 2015"
+                  value={formValues.yearsPractising}
+                  onChange={(e) => setField("yearsPractising", e.target.value)}
+                />
               </Field>
             </Section>
 
@@ -693,7 +765,7 @@ export function TherapistFormPage() {
               id="s5"
               number={5}
               title="Issues you work with"
-              description="Tick the ones you'd want a client to come to you for. Don't tick everything — be honest about your specialism."
+              description="Tick the ones you'd want a client to come to you for. Don't tick everything, be honest about your specialism."
             >
               <Field label="Areas you work with">
                 <div className="mb-3.5 flex flex-wrap gap-2">
@@ -705,7 +777,9 @@ export function TherapistFormPage() {
                         setField(
                           "issuesSelected",
                           formValues.issuesSelected.includes(issue)
-                            ? formValues.issuesSelected.filter((i) => i !== issue)
+                            ? formValues.issuesSelected.filter(
+                                (i) => i !== issue,
+                              )
                             : [...formValues.issuesSelected, issue],
                         )
                       }
@@ -721,7 +795,7 @@ export function TherapistFormPage() {
                   ))}
                 </div>
                 <div className="mt-2 flex gap-2">
-                  <Input placeholder="Add your own — e.g. ADHD, neurodivergence" />
+                  <Input placeholder="Add your own. E.g. ADHD, neurodivergence" />
                   <button
                     type="button"
                     className="rounded-[10px] bg-foreground px-4 py-[9px] text-[13.5px] text-background transition-opacity hover:opacity-85"
@@ -780,7 +854,11 @@ export function TherapistFormPage() {
                 label="Your domain name"
                 help="The web address for your site. If you don't have one yet, leave blank and we'll help."
               >
-                <Input placeholder="e.g. sarahtherapy.co.uk" value={formValues.domain} onChange={(e) => setField("domain", e.target.value)} />
+                <Input
+                  placeholder="e.g. sarahtherapy.co.uk"
+                  value={formValues.domain}
+                  onChange={(e) => setField("domain", e.target.value)}
+                />
               </Field>
               <Field
                 label="What's the main thing you want visitors to do?"
@@ -790,15 +868,18 @@ export function TherapistFormPage() {
                   {[
                     {
                       title: "Book a free consultation",
-                      description: "Best if you offer a short intro call and want to remove friction.",
+                      description:
+                        "Best if you offer a short intro call and want to remove friction.",
                     },
                     {
                       title: "Send an enquiry through a contact form",
-                      description: "Best if you'd rather read about someone before speaking.",
+                      description:
+                        "Best if you'd rather read about someone before speaking.",
                     },
                     {
                       title: "Read about my approach first",
-                      description: "Best for niche practitioners whose approach is the differentiator.",
+                      description:
+                        "Best for niche practitioners whose approach is the differentiator.",
                     },
                   ].map((opt) => (
                     <RadioCard
@@ -848,19 +929,23 @@ export function TherapistFormPage() {
                   {[
                     {
                       title: "Warm and reassuring",
-                      description: "Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety.",
+                      description:
+                        "Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety.",
                     },
                     {
                       title: "Grounded and practical",
-                      description: "Clear, professional, calm. Good for clients who want results without fuss.",
+                      description:
+                        "Clear, professional, calm. Good for clients who want results without fuss.",
                     },
                     {
                       title: "Direct and confident",
-                      description: "Warm but no-nonsense. Good for clients who want clarity, not hand-holding.",
+                      description:
+                        "Warm but no-nonsense. Good for clients who want clarity, not hand-holding.",
                     },
                     {
                       title: "Thoughtful and reflective",
-                      description: "Literary, considered. Good for clients drawn to depth and meaning.",
+                      description:
+                        "Literary, considered. Good for clients drawn to depth and meaning.",
                     },
                   ].map((opt) => (
                     <RadioCard
@@ -887,7 +972,7 @@ export function TherapistFormPage() {
 
             <div className="mt-14 rounded-2xl bg-foreground p-8 text-background">
               <h3 className="mb-2 font-display text-2xl font-medium tracking-[-0.01em]">
-                Ready when you are.
+                Ready when you are
               </h3>
               <p className="mb-6 text-[14.5px] leading-[1.55] text-background/70">
                 Once you submit, we&apos;ll write the first draft of your site.
