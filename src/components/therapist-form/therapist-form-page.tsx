@@ -47,7 +47,7 @@ const sections = [
     id: "s7",
     number: 7,
     label: "Common questions",
-    requiredFields: ["faqItems"],
+    requiredFields: [],
   },
   {
     id: "s8",
@@ -337,7 +337,6 @@ interface FormValues {
   hasHeadshot: boolean;
   domain: string;
   primaryCta: string;
-  faqItems: number;
   toneSelection: string;
 }
 
@@ -363,7 +362,6 @@ const initialFormValues: FormValues = {
   hasHeadshot: false,
   domain: "",
   primaryCta: "",
-  faqItems: 2,
   toneSelection: "",
 };
 
