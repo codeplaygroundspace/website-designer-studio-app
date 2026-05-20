@@ -392,6 +392,27 @@ export function TherapistFormPage() {
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
+  useEffect(() => {
+    sections.forEach((s) => {
+      sectionRefs.current[s.id] = document.getElementById(s.id);
+    });
+
+    const handleScroll = () => {
+      const midY = window.innerHeight / 2;
+      let current = sections[0].id;
+      for (const section of sections) {
+        const el = sectionRefs.current[section.id];
+        if (el && el.getBoundingClientRect().top <= midY) {
+          current = section.id;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <div className="mx-auto grid min-h-dvh max-w-[1400px] grid-cols-1 lg:grid-cols-[300px_1fr]">
