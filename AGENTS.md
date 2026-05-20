@@ -30,5 +30,18 @@ It's a way to check in with the user rather than making assumptions that might l
 
 ## Project
 
-Nextj.js 16.2.6
+Next.js 16.2.6
 Tailwind CSS 4.3.0
+
+## App structure
+
+- `/` — Therapist intake form (`src/components/therapist-form/therapist-form-page.tsx`)
+- Studio dashboard at `src/components/studio/studio-dashboard.tsx`
+- Shared UI primitives in `src/components/ui/`
+
+## Intake form notes
+
+- All 8 sections live in one file: `therapist-form-page.tsx`
+- Section completion is tracked via `FormValues` state and `isSectionComplete()` — required fields are defined in the `sections` array's `requiredFields` property
+- Sidebar scroll-spy uses a scroll listener + `getBoundingClientRect` (not IntersectionObserver)
+- Section 7 (FAQ) has no required fields and is always considered complete (pre-seeded content)
