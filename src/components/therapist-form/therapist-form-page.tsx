@@ -142,11 +142,35 @@ function Section({
   );
 }
 
-function CheckItem({ children }: { children: ReactNode }) {
+function CheckItem({
+  children,
+  checked,
+  onChange,
+}: {
+  children: ReactNode;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+}) {
   return (
     <label className="flex cursor-pointer select-none items-center gap-2.5 rounded-[10px] border border-border bg-card px-3.5 py-[11px] text-[14.5px] transition-colors hover:border-muted-foreground">
-      <input type="checkbox" className="sr-only" />
-      <span className="flex size-[18px] shrink-0 items-center justify-center rounded border-[1.5px] border-muted-foreground" />
+      <input
+        type="checkbox"
+        className="sr-only"
+        checked={checked}
+        onChange={(e) => onChange?.(e.target.checked)}
+      />
+      <span
+        className={cn(
+          "flex size-[18px] shrink-0 items-center justify-center rounded border-[1.5px] border-muted-foreground transition-colors",
+          checked && "border-primary bg-primary",
+        )}
+      >
+        {checked && (
+          <svg viewBox="0 0 10 8" className="size-2.5 fill-none stroke-white stroke-2">
+            <polyline points="1,4 4,7 9,1" />
+          </svg>
+        )}
+      </span>
       <span>{children}</span>
     </label>
   );
@@ -154,21 +178,26 @@ function CheckItem({ children }: { children: ReactNode }) {
 
 function ToggleGroup({
   options,
-  activeIndex = 1,
+  value,
+  onChange,
+  defaultIndex = 1,
 }: {
   options: string[];
-  activeIndex?: number;
+  value?: string;
+  onChange?: (value: string) => void;
+  defaultIndex?: number;
 }) {
+  const activeValue = value ?? options[defaultIndex];
   return (
     <div className="inline-flex rounded-lg border border-border bg-muted p-[3px]">
-      {options.map((option, index) => (
+      {options.map((option) => (
         <button
           key={option}
           type="button"
+          onClick={() => onChange?.(option)}
           className={cn(
             "rounded-md px-[18px] py-[7px] text-sm text-foreground/75 transition-colors",
-            index === activeIndex &&
-              "bg-card font-medium text-foreground shadow-sm",
+            option === activeValue && "bg-card font-medium text-foreground shadow-sm",
           )}
         >
           {option}
@@ -190,13 +219,25 @@ function ExamplesToggle() {
   );
 }
 
-function FileDrop({ title, help }: { title: string; help: string }) {
+function FileDrop({
+  title,
+  help,
+  onChange,
+}: {
+  title: string;
+  help: string;
+  onChange?: (hasFile: boolean) => void;
+}) {
   return (
     <label className="block cursor-pointer rounded-[10px] border border-dashed border-border bg-card px-5 py-7 text-center transition-colors hover:border-primary hover:bg-accent">
-      <input type="file" className="sr-only" />
-      <div className="mb-1 text-[14.5px] font-medium text-foreground">
-        {title}
-      </div>
+      <input
+        type="file"
+        className="sr-only"
+        onChange={(e) =>
+          onChange?.(e.target.files != null && e.target.files.length > 0)
+        }
+      />
+      <div className="mb-1 text-[14.5px] font-medium text-foreground">{title}</div>
       <div className="text-[13px] text-muted-foreground">{help}</div>
     </label>
   );
@@ -205,14 +246,29 @@ function FileDrop({ title, help }: { title: string; help: string }) {
 function RadioCard({
   title,
   description,
+  selected,
+  onSelect,
 }: {
   title: string;
   description: string;
+  selected?: boolean;
+  onSelect?: () => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-start gap-3.5 rounded-[10px] border border-border bg-card p-4 transition-colors hover:border-muted-foreground">
-      <input type="radio" className="sr-only" />
-      <span className="mt-[3px] size-4 shrink-0 rounded-full border-[1.5px] border-muted-foreground" />
+    <label
+      onClick={onSelect}
+      className={cn(
+        "flex cursor-pointer items-start gap-3.5 rounded-[10px] border bg-card p-4 transition-colors hover:border-muted-foreground",
+        selected ? "border-primary" : "border-border",
+      )}
+    >
+      <input type="radio" className="sr-only" readOnly checked={selected ?? false} />
+      <span
+        className={cn(
+          "mt-[3px] size-4 shrink-0 rounded-full border-[1.5px] transition-colors",
+          selected ? "border-primary bg-primary" : "border-muted-foreground",
+        )}
+      />
       <span>
         <span className="mb-0.5 block text-[15px] font-medium text-foreground">
           {title}
@@ -421,31 +477,45 @@ export function TherapistFormPage() {
                 label="Your name"
                 help="How you'd like it to appear on the site."
               >
-                <Input placeholder="e.g. Sarah Williams or Dr Sarah Williams" />
+                <Input placeholder="e.g. Sarah Williams or Dr Sarah Williams" value={formValues.name} onChange={(e) => setField("name", e.target.value)} />
               </Field>
               <Field
                 label="Your professional title"
                 help="What you'd put on a business card."
               >
-                <Input placeholder="e.g. CBT Therapist, Psychotherapist, Clinical Psychologist" />
+                <Input placeholder="e.g. CBT Therapist, Psychotherapist, Clinical Psychologist" value={formValues.title} onChange={(e) => setField("title", e.target.value)} />
               </Field>
               <Field
                 label="Your accreditation or registration"
                 help="List any professional bodies you're registered with."
               >
-                <Input placeholder="e.g. BACP Accredited, BPS Registered, UKCP" />
+                <Input placeholder="e.g. BACP Accredited, BPS Registered, UKCP" value={formValues.accreditation} onChange={(e) => setField("accreditation", e.target.value)} />
               </Field>
               <Field label="Where do you work?">
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  <CheckItem>In person</CheckItem>
-                  <CheckItem>Online</CheckItem>
+                  {["In person", "Online"].map((mode) => (
+                    <CheckItem
+                      key={mode}
+                      checked={formValues.workMode.includes(mode)}
+                      onChange={(checked) =>
+                        setField(
+                          "workMode",
+                          checked
+                            ? [...formValues.workMode, mode]
+                            : formValues.workMode.filter((m) => m !== mode),
+                        )
+                      }
+                    >
+                      {mode}
+                    </CheckItem>
+                  ))}
                 </div>
               </Field>
               <Field
                 label="Your fees"
                 help="Plain language is fine — you don't need to be clever about this."
               >
-                <Input placeholder="e.g. £90 per 50-minute session, sliding scale available" />
+                <Input placeholder="e.g. £90 per 50-minute session, sliding scale available" value={formValues.fees} onChange={(e) => setField("fees", e.target.value)} />
               </Field>
               <Field
                 label="Show your email on the site?"
@@ -483,7 +553,7 @@ export function TherapistFormPage() {
                 help="Think of one ideal client. Not everyone — the person you're best placed to support."
               >
                 <ExamplesToggle />
-                <Input placeholder="In about 10–20 words" />
+                <Input placeholder="In about 10–20 words" value={formValues.whoYouHelp} onChange={(e) => setField("whoYouHelp", e.target.value)} />
               </Field>
               <Field
                 label="What are three things your clients are most often struggling with when they first contact you?"
@@ -491,9 +561,9 @@ export function TherapistFormPage() {
               >
                 <ExamplesToggle />
                 <div className="grid gap-2">
-                  <Input placeholder="First struggle" />
-                  <Input placeholder="Second struggle" />
-                  <Input placeholder="Third struggle" />
+                  <Input placeholder="First struggle" value={formValues.struggle1} onChange={(e) => setField("struggle1", e.target.value)} />
+                  <Input placeholder="Second struggle" value={formValues.struggle2} onChange={(e) => setField("struggle2", e.target.value)} />
+                  <Input placeholder="Third struggle" value={formValues.struggle3} onChange={(e) => setField("struggle3", e.target.value)} />
                 </div>
               </Field>
               <Field
@@ -503,7 +573,7 @@ export function TherapistFormPage() {
                 }
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Two or three sentences" rows={4} />
+                <Textarea placeholder="Two or three sentences" rows={4} value={formValues.triggerMoment} onChange={(e) => setField("triggerMoment", e.target.value)} />
               </Field>
               <Field
                 label="Anyone you don't work with?"
@@ -524,14 +594,14 @@ export function TherapistFormPage() {
                 label="What therapeutic approach do you use?"
                 help="If you use more than one, name your main one first."
               >
-                <Input placeholder="e.g. CBT, Integrative, Psychodynamic with trauma-focused training" />
+                <Input placeholder="e.g. CBT, Integrative, Psychodynamic with trauma-focused training" value={formValues.approach} onChange={(e) => setField("approach", e.target.value)} />
               </Field>
               <Field
                 label="What's it actually like to work with you?"
                 help="Try to avoid technical terms. Think about how a friend would describe your style."
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Two or three sentences" rows={4} />
+                <Textarea placeholder="Two or three sentences" rows={4} value={formValues.workingStyle} onChange={(e) => setField("workingStyle", e.target.value)} />
               </Field>
               <Field
                 label="What's a first session like?"
@@ -540,10 +610,12 @@ export function TherapistFormPage() {
                 <Textarea
                   placeholder="Anxious clients want to know what they're walking into"
                   rows={4}
+                  value={formValues.firstSession}
+                  onChange={(e) => setField("firstSession", e.target.value)}
                 />
               </Field>
               <Field label="Do you offer a free initial consultation?">
-                <ToggleGroup options={["Yes", "No"]} activeIndex={0} />
+                <ToggleGroup options={["Yes", "No"]} />
               </Field>
             </Section>
 
@@ -558,7 +630,7 @@ export function TherapistFormPage() {
                 help="Two ways to answer: a personal spark, or a client experience that confirmed this was the right work for you. You don't need to share trauma — just what makes this work meaningful to you."
               >
                 <ExamplesToggle />
-                <Textarea placeholder="Three to five sentences" rows={5} />
+                <Textarea placeholder="Three to five sentences" rows={5} value={formValues.whyYouDoThis} onChange={(e) => setField("whyYouDoThis", e.target.value)} />
               </Field>
               <Field
                 label="What do clients tell you they appreciated about working with you?"
@@ -577,10 +649,12 @@ export function TherapistFormPage() {
                 <Textarea
                   placeholder="e.g. MSc in Counselling Psychology from University of East London (2014). Additional training in trauma-focused CBT and EMDR. Ongoing CPD in perinatal mental health."
                   rows={4}
+                  value={formValues.trainingBackground}
+                  onChange={(e) => setField("trainingBackground", e.target.value)}
                 />
               </Field>
               <Field label="How long have you been practising?">
-                <Input placeholder="e.g. Over 10 years, or Since 2015" />
+                <Input placeholder="e.g. Over 10 years, or Since 2015" value={formValues.yearsPractising} onChange={(e) => setField("yearsPractising", e.target.value)} />
               </Field>
             </Section>
 
@@ -596,7 +670,20 @@ export function TherapistFormPage() {
                     <button
                       key={issue}
                       type="button"
-                      className="select-none rounded-full border border-border bg-card px-3.5 py-2 text-[13.5px] text-foreground/75 transition-colors hover:border-muted-foreground hover:text-foreground"
+                      onClick={() =>
+                        setField(
+                          "issuesSelected",
+                          formValues.issuesSelected.includes(issue)
+                            ? formValues.issuesSelected.filter((i) => i !== issue)
+                            : [...formValues.issuesSelected, issue],
+                        )
+                      }
+                      className={cn(
+                        "select-none rounded-full border px-3.5 py-2 text-[13.5px] transition-colors",
+                        formValues.issuesSelected.includes(issue)
+                          ? "border-primary bg-primary/10 text-foreground"
+                          : "border-border bg-card text-foreground/75 hover:border-muted-foreground hover:text-foreground",
+                      )}
                     >
                       {issue}
                     </button>
@@ -619,6 +706,8 @@ export function TherapistFormPage() {
                 <Textarea
                   placeholder="e.g. Anxiety and burnout in high-pressure careers, perinatal mental health"
                   rows={2}
+                  value={formValues.topSpecialisms}
+                  onChange={(e) => setField("topSpecialisms", e.target.value)}
                 />
               </Field>
             </Section>
@@ -636,6 +725,7 @@ export function TherapistFormPage() {
                 <FileDrop
                   title="Click to upload your headshot"
                   help="JPG or PNG, ideally 1500px or larger"
+                  onChange={(hasFile) => setField("hasHeadshot", hasFile)}
                 />
               </Field>
               <Field
@@ -659,25 +749,35 @@ export function TherapistFormPage() {
                 label="Your domain name"
                 help="The web address for your site. If you don't have one yet, leave blank and we'll help."
               >
-                <Input placeholder="e.g. sarahtherapy.co.uk" />
+                <Input placeholder="e.g. sarahtherapy.co.uk" value={formValues.domain} onChange={(e) => setField("domain", e.target.value)} />
               </Field>
               <Field
                 label="What's the main thing you want visitors to do?"
                 help="This becomes the main call-to-action across your site."
               >
                 <div className="flex flex-col gap-2">
-                  <RadioCard
-                    title="Book a free consultation"
-                    description="Best if you offer a short intro call and want to remove friction."
-                  />
-                  <RadioCard
-                    title="Send an enquiry through a contact form"
-                    description="Best if you'd rather read about someone before speaking."
-                  />
-                  <RadioCard
-                    title="Read about my approach first"
-                    description="Best for niche practitioners whose approach is the differentiator."
-                  />
+                  {[
+                    {
+                      title: "Book a free consultation",
+                      description: "Best if you offer a short intro call and want to remove friction.",
+                    },
+                    {
+                      title: "Send an enquiry through a contact form",
+                      description: "Best if you'd rather read about someone before speaking.",
+                    },
+                    {
+                      title: "Read about my approach first",
+                      description: "Best for niche practitioners whose approach is the differentiator.",
+                    },
+                  ].map((opt) => (
+                    <RadioCard
+                      key={opt.title}
+                      title={opt.title}
+                      description={opt.description}
+                      selected={formValues.primaryCta === opt.title}
+                      onSelect={() => setField("primaryCta", opt.title)}
+                    />
+                  ))}
                 </div>
               </Field>
             </Section>
@@ -714,22 +814,32 @@ export function TherapistFormPage() {
             >
               <Field label="Which best describes how you'd like to come across?">
                 <div className="flex flex-col gap-2">
-                  <RadioCard
-                    title="Warm and reassuring"
-                    description="Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety."
-                  />
-                  <RadioCard
-                    title="Grounded and practical"
-                    description="Clear, professional, calm. Good for clients who want results without fuss."
-                  />
-                  <RadioCard
-                    title="Direct and confident"
-                    description="Warm but no-nonsense. Good for clients who want clarity, not hand-holding."
-                  />
-                  <RadioCard
-                    title="Thoughtful and reflective"
-                    description="Literary, considered. Good for clients drawn to depth and meaning."
-                  />
+                  {[
+                    {
+                      title: "Warm and reassuring",
+                      description: "Gentle, soft, calming. Good for clients carrying a lot of pain or anxiety.",
+                    },
+                    {
+                      title: "Grounded and practical",
+                      description: "Clear, professional, calm. Good for clients who want results without fuss.",
+                    },
+                    {
+                      title: "Direct and confident",
+                      description: "Warm but no-nonsense. Good for clients who want clarity, not hand-holding.",
+                    },
+                    {
+                      title: "Thoughtful and reflective",
+                      description: "Literary, considered. Good for clients drawn to depth and meaning.",
+                    },
+                  ].map((opt) => (
+                    <RadioCard
+                      key={opt.title}
+                      title={opt.title}
+                      description={opt.description}
+                      selected={formValues.toneSelection === opt.title}
+                      onSelect={() => setField("toneSelection", opt.title)}
+                    />
+                  ))}
                 </div>
               </Field>
               <Field
