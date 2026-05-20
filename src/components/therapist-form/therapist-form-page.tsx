@@ -7,14 +7,54 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 const sections = [
-  { id: "s1", number: 1, label: "The basics", state: "active" },
-  { id: "s2", number: 2, label: "Who you help" },
-  { id: "s3", number: 3, label: "How you work" },
-  { id: "s4", number: 4, label: "Your story" },
-  { id: "s5", number: 5, label: "Issues you work with" },
-  { id: "s6", number: 6, label: "Practical details" },
-  { id: "s7", number: 7, label: "Common questions", state: "complete" },
-  { id: "s8", number: 8, label: "Tone & voice" },
+  {
+    id: "s1",
+    number: 1,
+    label: "The basics",
+    requiredFields: ["name", "title", "accreditation", "fees", "workMode"],
+  },
+  {
+    id: "s2",
+    number: 2,
+    label: "Who you help",
+    requiredFields: ["whoYouHelp", "struggle1", "struggle2", "struggle3", "triggerMoment"],
+  },
+  {
+    id: "s3",
+    number: 3,
+    label: "How you work",
+    requiredFields: ["approach", "workingStyle", "firstSession"],
+  },
+  {
+    id: "s4",
+    number: 4,
+    label: "Your story",
+    requiredFields: ["whyYouDoThis", "trainingBackground", "yearsPractising"],
+  },
+  {
+    id: "s5",
+    number: 5,
+    label: "Issues you work with",
+    requiredFields: ["issuesSelected", "topSpecialisms"],
+  },
+  {
+    id: "s6",
+    number: 6,
+    label: "Practical details",
+    requiredFields: ["hasHeadshot", "domain", "primaryCta"],
+  },
+  {
+    id: "s7",
+    number: 7,
+    label: "Common questions",
+    requiredFields: ["faqItems"],
+  },
+  {
+    id: "s8",
+    number: 8,
+    label: "Tone & voice",
+    requiredFields: ["toneSelection"],
+  },
 ];
 
 const insurers = ["Bupa", "AXA Health", "Aviva", "Vitality", "WPA", "Cigna"];
