@@ -6,18 +6,39 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { sections, insurers, issues } from "./data/intake-form-data";
+import { MobileBottomNav } from "./mobile-bottom-nav";
 
 function Field({
   label,
   help,
   optional,
+  inline,
   children,
 }: {
   label: string;
   help?: string;
   optional?: boolean;
+  inline?: boolean;
   children: ReactNode;
 }) {
+  if (inline) {
+    return (
+      <div className="mb-7 lg:flex lg:items-center lg:justify-between lg:gap-8">
+        <div className="mb-2 lg:mb-0">
+          <p className="text-[15px] font-medium tracking-[-0.005em] text-foreground">
+            {label}
+          </p>
+          {help ? (
+            <p className="mt-0.5 text-[13.5px] leading-normal text-foreground/75">
+              {help}
+            </p>
+          ) : null}
+        </div>
+        <div className="shrink-0">{children}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="mb-7">
       <label className="mb-1.5 block text-[15px] font-medium tracking-[-0.005em] text-foreground">
@@ -57,10 +78,10 @@ function Section({
       className="mb-16 scroll-mt-8 border-b border-border pb-16 last:border-b-0"
     >
       <header className="mb-9">
-        <div className="mb-2 font-display text-[13px] tracking-[0.04em] text-muted-foreground">
-          {number}
-        </div>
-        <h2 className="mb-2.5 font-display text-[30px] font-medium leading-[1.15] tracking-[-0.015em] text-foreground">
+        <h2 className="mb-2.5 flex items-baseline gap-3 font-display text-[30px] font-medium leading-[1.15] tracking-[-0.015em] text-foreground">
+          <span className="text-[13px] font-normal tracking-[0.04em] text-muted-foreground">
+            {number}
+          </span>
           {title}
         </h2>
         <p className="max-w-xl text-[15.5px] leading-normal text-foreground/75">
@@ -143,13 +164,15 @@ function ToggleGroup({
 
 function ExamplesToggle() {
   return (
-    <button
-      type="button"
-      className="mb-3 inline-flex items-center gap-1.5 text-[13.5px] text-primary transition-opacity hover:opacity-70"
-    >
-      <span>+</span>
-      Show me examples
-    </button>
+    <div className="mt-1.5 flex justify-end">
+      <button
+        type="button"
+        className="inline-flex items-center gap-1.5 text-[13px] text-primary transition-opacity hover:opacity-70"
+      >
+        <span>+</span>
+        Show me examples
+      </button>
+    </div>
   );
 }
 
@@ -371,13 +394,6 @@ export function TherapistFormPage() {
                   }}
                 />
               </div>
-              <div className="mt-2 text-[13px] text-foreground/75">
-                {
-                  sections.filter((s) => isSectionComplete(s.id, formValues))
-                    .length
-                }{" "}
-                of {sections.length} sections
-              </div>
             </div>
 
             <nav aria-label="Form sections" className="hidden lg:block">
@@ -424,7 +440,7 @@ export function TherapistFormPage() {
           </div>
         </aside>
 
-        <div className="px-6 py-8 sm:px-10 lg:px-16 lg:py-14">
+        <div className="px-6 pb-24 pt-8 sm:px-10 lg:px-16 lg:pb-14 lg:pt-14">
           <form className="max-w-[720px]">
             <div className="mb-14">
               <h1 className="mb-[18px] font-display text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-foreground">
@@ -503,15 +519,17 @@ export function TherapistFormPage() {
               <Field
                 label="Show your email on the site?"
                 help="Visitors can see your emails."
+                inline
               >
                 <ToggleGroup options={["Yes", "No"]} />
               </Field>
-              <Field label="Show a phone number on the site?">
+              <Field label="Show a phone number on the site?" inline>
                 <ToggleGroup options={["Yes", "No"]} />
               </Field>
               <Field
                 label="Show an address on the site?"
                 help="Useful if you have a consulting room."
+                inline
               >
                 <ToggleGroup options={["Yes", "No"]} />
               </Field>
@@ -538,18 +556,17 @@ export function TherapistFormPage() {
                 label="In one sentence, who do you help?"
                 help="Think of one ideal client. Not everyone but the person you're best placed to support."
               >
-                <ExamplesToggle />
                 <Input
                   placeholder="In about 10–20 words"
                   value={formValues.whoYouHelp}
                   onChange={(e) => setField("whoYouHelp", e.target.value)}
                 />
+                <ExamplesToggle />
               </Field>
               <Field
                 label="What are three things your clients are most often struggling with when they first contact you?"
                 help=" Try not to use clinical terms, instead think what they'd type into Google in their own words when looking for help."
               >
-                <ExamplesToggle />
                 <div className="grid gap-2">
                   <Input
                     placeholder="First struggle"
@@ -567,6 +584,7 @@ export function TherapistFormPage() {
                     onChange={(e) => setField("struggle3", e.target.value)}
                   />
                 </div>
+                <ExamplesToggle />
               </Field>
               <Field
                 label="What's the moment in life that often brings someone to you?"
@@ -574,13 +592,13 @@ export function TherapistFormPage() {
                   'The trigger point. The "I can\'t keep doing this" moment.'
                 }
               >
-                <ExamplesToggle />
                 <Textarea
                   placeholder="Two or three sentences"
                   rows={4}
                   value={formValues.triggerMoment}
                   onChange={(e) => setField("triggerMoment", e.target.value)}
                 />
+                <ExamplesToggle />
               </Field>
               <Field
                 label="Anyone you don't work with?"
@@ -611,13 +629,13 @@ export function TherapistFormPage() {
                 label="What's it actually like to work with you?"
                 help="Try to avoid technical terms. Think about how a friend would describe your style."
               >
-                <ExamplesToggle />
                 <Textarea
                   placeholder="Two or three sentences"
                   rows={4}
                   value={formValues.workingStyle}
                   onChange={(e) => setField("workingStyle", e.target.value)}
                 />
+                <ExamplesToggle />
               </Field>
               <Field
                 label="What's a first session like?"
@@ -645,13 +663,13 @@ export function TherapistFormPage() {
                 label="Why do you do this work?"
                 help="Two ways to answer: a personal spark, or a client experience that confirmed this was the right work for you. You don't need to share trauma, just what makes this work meaningful to you."
               >
-                <ExamplesToggle />
                 <Textarea
                   placeholder="Three to five sentences"
                   rows={5}
                   value={formValues.whyYouDoThis}
                   onChange={(e) => setField("whyYouDoThis", e.target.value)}
                 />
+                <ExamplesToggle />
               </Field>
               <Field
                 label="What do clients tell you they appreciated about working with you?"
@@ -914,6 +932,7 @@ export function TherapistFormPage() {
           </form>
         </div>
       </div>
+      <MobileBottomNav activeSection={activeSection} />
     </main>
   );
 }
